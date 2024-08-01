@@ -116,13 +116,15 @@ function updateData($table, $data, $where, $json = true)
 
 
 //deleteData
-function deleteData($table, $where, $json = true)
+function deleteData($table, $user_name, $user_email, $json = true)
 {
     global $con;
-    $stmt = $con->prepare("DELETE FROM $table WHERE $where");
+    $stmt = $con->prepare("DELETE FROM $table WHERE user_name = :user_name AND user_email = :user_email");
+    $stmt->bindParam(':user_name', $user_name);
+    $stmt->bindParam(':user_email', $user_email);
     $stmt->execute();
     $count = $stmt->rowCount();
-    if ($json == true) {
+    if ($json) {
         if ($count > 0) {
             echo json_encode(array("status" => "success"));
         } else {
@@ -131,7 +133,6 @@ function deleteData($table, $where, $json = true)
     }
     return $count;
 }
-
 
 //uploadImage 
 function imageUpload($imageRequest)
@@ -155,7 +156,7 @@ function imageUpload($imageRequest)
     move_uploaded_file($imagetmp,  "../upload/" . $imagename);
     return $imagename;
   } else {
-    return "fail";
+        return "failure";
   }
 }
 
@@ -202,6 +203,7 @@ function sendGCM($title, $message, $topic, $pageid, $pagename)
         'Authorization: key=' . "AAAAyV7NgBg:APA91bHoaAJ4K4eWS0-RHT5m4lnW-Hz1qCxaPnviTXLLN_9GPyvB2pFHr3H-OQRWqvG6lOrSnmoNYOXNcA1U3pqgOkejzLup3PyV8qpc2iA6aOp-VwQNNIOLlRu7-KpxjfDtEYH0Gp7R",
         'Content-Type: application/json'
     );
+
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

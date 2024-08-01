@@ -14,5 +14,4 @@ $value=array($user_email);
 
 $count = getAllData($table,$where,$value);
 
-
 ?>

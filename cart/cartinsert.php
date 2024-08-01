@@ -32,14 +32,13 @@ $table= "cart";
 
 
   $data = array(
-    "items_count" => $items_count
+    "items_count" => $items_count,
+    "item_top_selling" => 1
    );
-   
-   $where = "items_id   = $cart_item_id ";
-   
+
+  $where = "items_id   = $cart_item_id ";
+  sendGCM("Hi BEA shop", "New Order have been added !! id:$cart_item_id", "admin", "$cart_item_id", "orders");
    updateData($table, $data, $where, $json = false);
-
-
 
  }
 

@@ -1,8 +1,6 @@
 
 
 <?php
-
-include "../mailer/mail.php";
 include "../connect.php";
 
 
@@ -19,15 +17,11 @@ $stmt->execute(array($user_email, $user_phone));
 
 
 $count = $stmt->rowCount();
-
-if($count> 0){
-
+if ($count > 0) {
     printFailure("the Phone or email was used");
-
 }else{
 
-   $table = "users";
-
+    $table = "users";
    $data = array(
         "user_name" => $user_name,
         "user_email" => $user_email,
@@ -36,23 +30,8 @@ if($count> 0){
         "user_verifycode" => $user_verifycode,
     );
 
-
-
     insertData ($table,$data);
-
-
-$mail->setFrom('mohamedyasser.alkotp@gmail.com', 'BEA Shop');
-
-$mail->addAddress($user_email); 
-
-$mail->Subject = 'Hi BEA shop';
-$mail->Body = "Your Verification Code: $user_verifycode";
-
-
-$mail->send();
-
-    
-  
+    // send the mailer
 }
 
 
